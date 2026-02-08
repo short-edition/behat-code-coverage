@@ -182,7 +182,7 @@ class ExtensionTest extends TestCase
     public function testContainerBuildsWithCoverageSkipped(): void
     {
         $input = $this->createStub(InputInterface::class);
-        $input->method('hasParameterOption')->with($this->equalTo('--no-coverage'))->willReturn(true);
+        $input->method('hasParameterOption')->willReturnMap([['--no-coverage', true]]);
         $output = $this->createStub(OutputInterface::class);
 
         $container = new ContainerBuilder();
