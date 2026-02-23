@@ -201,7 +201,8 @@ class Extension implements ExtensionInterface
         $branchPathConfig = $container->getParameter('behat.code_coverage.config.branchAndPathCoverage');
         $cacheDir = $container->getParameter('behat.code_coverage.config.cache');
 
-        $canCollectCodeCoverage = !$input->hasParameterOption('--no-coverage');
+        $canCollectCodeCoverage = $input->hasParameterOption('--suite') && $input->getParameterOption('--suite') === 'coverage';
+
         if ($canCollectCodeCoverage) {
             try {
                 $this->initCodeCoverage(new Filter(), $filterConfig, $branchPathConfig, $cacheDir, $output);
