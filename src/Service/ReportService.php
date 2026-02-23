@@ -77,7 +77,7 @@ class ReportService
                     $report = new HtmlFacade(
                         sprintf(
                             ' and <a href="https://behat.cc">Behat Code Coverage %s</a>',
-                            InstalledVersions::getPrettyVersion('dvdoug/behat-code-coverage')
+                            InstalledVersions::getPrettyVersion('short-edition/behat-code-coverage')
                         ),
                         $colors,
                         $thresholds,
