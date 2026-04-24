@@ -203,7 +203,7 @@ class Extension implements ExtensionInterface
         ->end();
     }
 
-    public function getConfigKey()
+    public function getConfigKey(): string
     {
         return 'code_coverage';
     }
@@ -251,7 +251,7 @@ class Extension implements ExtensionInterface
         $files = [];
 
         foreach ($filterConfig['include']['directories'] as $directoryToInclude => $details) {
-            foreach ((new FileIteratorFacade())->getFilesAsArray($directoryToInclude, $details['suffix'], $details['prefix']) as $fileToInclude) {
+            foreach (new FileIteratorFacade()->getFilesAsArray($directoryToInclude, $details['suffix'], $details['prefix']) as $fileToInclude) {
                 $files[realpath($fileToInclude)] = realpath($fileToInclude);
             }
         }
@@ -261,7 +261,7 @@ class Extension implements ExtensionInterface
         }
 
         foreach ($filterConfig['exclude']['directories'] as $directoryToExclude => $details) {
-            foreach ((new FileIteratorFacade())->getFilesAsArray($directoryToExclude, $details['suffix'], $details['prefix']) as $fileToExclude) {
+            foreach (new FileIteratorFacade()->getFilesAsArray($directoryToExclude, $details['suffix'], $details['prefix']) as $fileToExclude) {
                 unset($files[$fileToExclude]);
             }
         }
@@ -280,7 +280,7 @@ class Extension implements ExtensionInterface
         if ($branchPathConfig !== false) {
             try {
                 $driver = $selector->forLineAndPathCoverage($filter);
-            } catch (NoCodeCoverageDriverWithPathCoverageSupportAvailableException|XdebugNotAvailableException|XdebugNotEnabledException $e) {
+            } catch (NoCodeCoverageDriverWithPathCoverageSupportAvailableException|XdebugNotAvailableException|XdebugNotEnabledException) {
                 // fallback driver is already set
                 if ($branchPathConfig === true) { // only warn if explicitly enabled
                     $output->writeln(sprintf('<info>%s does not support collecting branch and path data</info>', $driver->nameAndVersion()));
