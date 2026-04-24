@@ -17,8 +17,10 @@ use SebastianBergmann\CodeCoverage\Report\Html\Colors;
 use SebastianBergmann\CodeCoverage\Report\Html\CustomCssFile;
 use SebastianBergmann\CodeCoverage\Report\Html\Facade as HtmlFacade;
 use SebastianBergmann\CodeCoverage\Report\OpenClover;
+use SebastianBergmann\CodeCoverage\Report\PHP;
 use SebastianBergmann\CodeCoverage\Report\Text;
 use SebastianBergmann\CodeCoverage\Report\Thresholds;
+use SebastianBergmann\CodeCoverage\Report\Xml\Facade as XmlFacade;
 use SebastianBergmann\CodeCoverage\Serialization\Serializer;
 
 use function sprintf;
@@ -98,7 +100,7 @@ class ReportService
                         $config['target'],
                         sprintf(
                             ' and <a href="https://behat.cc">Behat Code Coverage %s</a>',
-                            InstalledVersions::getPrettyVersion('dvdoug/behat-code-coverage')
+                            InstalledVersions::getPrettyVersion('short-edition/behat-code-coverage')
                         ),
                         $colors,
                         $thresholds,
@@ -129,6 +131,10 @@ class ReportService
     {
         foreach ($this->config as $format => $config) {
             switch ($format) {
+                case 'php':
+                    $report = new PHP();
+                    $report->process($coverage, $config['target']);
+                    break;
                 case 'openclover':
                     $report = new OpenClover();
                     $report->process($coverage, $config['target'], $config['name']);
@@ -148,10 +154,23 @@ class ReportService
                     );
                     $colors = Colors::from(
                         $config['colors']['successLow'],
+                        $config['colors']['successLowDark'],
                         $config['colors']['successMedium'],
+                        $config['colors']['successMediumDark'],
                         $config['colors']['successHigh'],
+                        $config['colors']['successHighDark'],
+                        $config['colors']['successBar'],
+                        $config['colors']['successBarDark'],
                         $config['colors']['warning'],
+                        $config['colors']['warningDark'],
+                        $config['colors']['warningBar'],
+                        $config['colors']['warningBarDark'],
                         $config['colors']['danger'],
+                        $config['colors']['dangerDark'],
+                        $config['colors']['dangerBar'],
+                        $config['colors']['dangerBarDark'],
+                        $config['colors']['breadcrumbs'],
+                        $config['colors']['breadcrumbsDark'],
                     );
                     if ($config['customCSSFile']) {
                         $customCss = CustomCssFile::from($config['customCSSFile']);
@@ -180,6 +199,10 @@ class ReportService
                         $config['showOnlySummary']
                     );
                     echo $report->process($coverage, $config['showColors']);
+                    break;
+                case 'xml':
+                    $report = new XmlFacade('');
+                    $report->process($coverage, $config['target']);
                     break;
                 case 'cobertura':
                     $report = new Cobertura();
