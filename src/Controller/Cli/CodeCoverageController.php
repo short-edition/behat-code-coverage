@@ -24,6 +24,6 @@ class CodeCoverageController implements Controller
      */
     public function execute(InputInterface $input, OutputInterface $output): ?int
     {
-        return Command::SUCCESS;
+        return null;
     }
 }
