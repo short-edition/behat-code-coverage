@@ -7,6 +7,7 @@ declare(strict_types=1);
 namespace DVDoug\Behat\CodeCoverage\Service;
 
 use Composer\InstalledVersions;
+use Composer\Semver\VersionParser;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeCoverage\Report\Clover;
 use SebastianBergmann\CodeCoverage\Report\Cobertura;
@@ -41,7 +42,7 @@ class ReportService
      */
     public function generateReport(CodeCoverage $coverage): void
     {
-        if (InstalledVersions::satisfies(new \Composer\Semver\VersionParser(), 'phpunit/php-code-coverage', '<14')) {
+        if (InstalledVersions::satisfies(new VersionParser(), 'phpunit/php-code-coverage', '<14')) {
             $this->generateReportPreV14($coverage);
 
             return;
@@ -153,10 +154,23 @@ class ReportService
                     );
                     $colors = Colors::from(
                         $config['colors']['successLow'],
+                        $config['colors']['successLowDark'],
                         $config['colors']['successMedium'],
+                        $config['colors']['successMediumDark'],
                         $config['colors']['successHigh'],
+                        $config['colors']['successHighDark'],
+                        $config['colors']['successBar'],
+                        $config['colors']['successBarDark'],
                         $config['colors']['warning'],
+                        $config['colors']['warningDark'],
+                        $config['colors']['warningBar'],
+                        $config['colors']['warningBarDark'],
                         $config['colors']['danger'],
+                        $config['colors']['dangerDark'],
+                        $config['colors']['dangerBar'],
+                        $config['colors']['dangerBarDark'],
+                        $config['colors']['breadcrumbs'],
+                        $config['colors']['breadcrumbsDark'],
                     );
                     if ($config['customCSSFile']) {
                         $customCss = CustomCssFile::from($config['customCSSFile']);

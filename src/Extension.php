@@ -225,7 +225,9 @@ class Extension implements ExtensionInterface
         $branchPathConfig = $container->getParameter('behat.code_coverage.config.branchAndPathCoverage');
         $cacheDir = $container->getParameter('behat.code_coverage.config.cache');
 
-        $canCollectCodeCoverage = !$input->hasParameterOption('--no-coverage');
+        $canCollectCodeCoverage = !$input->hasParameterOption('--no-coverage')
+            || $input->getParameterOption('--profile') === 'coverage';
+
         if ($canCollectCodeCoverage) {
             try {
                 $this->initCodeCoverage(new Filter(), $filterConfig, $branchPathConfig, $cacheDir, $output);
@@ -280,7 +282,7 @@ class Extension implements ExtensionInterface
         if ($branchPathConfig !== false) {
             try {
                 $driver = $selector->forLineAndPathCoverage($filter);
-            } catch (NoSupportedDriverAvailableException|NoCodeCoverageDriverWithPathCoverageSupportAvailableException|XdebugNotAvailableException|XdebugNotEnabledException $e) {
+            } catch (NoSupportedDriverAvailableException|NoCodeCoverageDriverWithPathCoverageSupportAvailableException|XdebugNotAvailableException|XdebugNotEnabledException) {
                 // fallback driver is already set
                 if ($branchPathConfig === true) { // only warn if explicitly enabled
                     $output->writeln(sprintf('<info>%s does not support collecting branch and path data</info>', $driver->nameAndVersion()));

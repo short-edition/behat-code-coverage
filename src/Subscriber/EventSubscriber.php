@@ -54,7 +54,7 @@ class EventSubscriber implements EventSubscriberInterface
     /**
      * After Scenario/Outline Example hook.
      */
-    public function afterScenario(ScenarioTested $event): void
+    public function afterScenario(): void
     {
         if (!$this->coverage) {
             return;
@@ -66,7 +66,7 @@ class EventSubscriber implements EventSubscriberInterface
     /**
      * After Exercise hook.
      */
-    public function afterExercise(ExerciseCompleted $event): void
+    public function afterExercise(): void
     {
         if (!$this->coverage) {
             return;
